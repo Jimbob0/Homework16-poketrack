@@ -1,0 +1,27 @@
+DONE GET /
+	Give us index.html
+
+DONE GET /location
+	-> login
+	Get all nearby locations
+
+DONE GET /location/:pokemon_id
+	-> login
+	Get all nearby locations for
+	pokemon with id :pokemon_id
+
+DONE POST /location
+	-> login
+	Add a new location / pokemon
+
+DONE GET /login
+	Shows us login.html
+
+DONE POST /login
+	Logs in the user
+
+DONE POST /logout
+	Logs out the user
+
+
+

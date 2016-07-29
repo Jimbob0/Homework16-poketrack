@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PokéTrack - Login</title>
+
+	<script
+		src="https://code.jquery.com/jquery-3.1.0.min.js"
+		integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+		crossorigin="anonymous"
+	></script>
+
+	<script>
+		function tryToLogin() {
+			$.post('/login',
+			{
+				username: $('#username').val(),
+				password: $('#password').val()
+			}, function(data) {
+				if (data === "success"){
+					document.location = "/map";
+				} else {
+					$('#error').html("NOPE!");
+				}
+			});
+		}
+
+		function tryToRegister() {
+			$.post('/register',
+			{
+				username: $('#username').val(),
+				password: $('#password').val()
+			}, function(data) {
+				if (data === "success"){
+					document.location = "/map";
+				} else {
+					$('#error').html("NOPE!");
+				}
+			});
+		}
+
+		$(document).ready(function() {
+			$('#submit').click(tryToLogin);
+			$('#register').click(tryToRegister);
+		});
+	</script>
+</head>
+<body>
+	<style type="text/css">
+		.div{
+			background-image: url("http://cdn.gamerant.com/wp-content/uploads/Pokemon-banner.jpg.optimal.jpg");
+			width: 1080px;
+			height: 600px;
+			margin: 0;
+		}
+		h1{
+			text-align: center;
+			margin-right:60px;
+			color: #3860D9;
+		}
+		input{
+			margin:0 41%;
+			color: #3860D9;
+		}
+		button{
+			margin: 0 41%;
+			background-color: #3860D9;
+			color: #FFE93C;
+			border-radius: 5px;
+		}
+	</style>
+	<div class="div">
+		<h1>Login</h1>
+		<input type="text" id="username">
+		<input type="password" id="password">
+		<button id="submit">Login</button>
+		<button id="register">Register</button>
+		<div id="error"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PokéTrack</title>
+	<script
+		src="https://code.jquery.com/jquery-3.1.0.min.js"
+		integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+		crossorigin="anonymous"
+	></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script>
+
+	function showAllPokemon() {
+		console.log("showing Pokemon");
+		$.get('/sighting', // GET the route /sighting
+			function(data){ //handle the data it returns
+				$('#output').html(""); //reset our output element
+				for (var i = 0; i < data.length; i++) { //for each datum
+					$('#output').append( //append a new paragraph to #output
+						'<p>' + data[i].locStr + " has a " + data[i].pokemonId + '</p>'
+					);
+				}
+			},
+			'json' //interpret the incoming data as a JSON object (JSON.parse)
+		);
+	}
+
+	function sendPokemon() {
+		console.log("sending Pokemon");
+		$.post(
+			'/sighting',
+			{
+				locStr: $('#locStr').val(),
+				pokemonId: $('#pokemonId').val()
+			},
+			function(data){
+				if (data == "success") {
+					showAllPokemon();
+				}
+			}
+		);
+	}
+
+	function showSearchedPokemon() {
+		console.log("showing searched Pokemon");
+		var city = [];
+		var pokemonId = [];
+		if ($('#locStrSearch').val()){
+			city[0] = "/"+$('#locStrSearch').val();
+		} else {
+			city[0] = "/all";
+		}
+		if ($('#pokemonIdSearch').val()){
+			pokemonId[0] = "/"+$('#pokemonIdSearch').val();
+		} else {
+			pokemonId[0] = "/all";
+		}
+
+		$.get("/sighting"+city[0]+pokemonId[0], // GET the route /sighting
+			function(data){ //handle the data it returns
+				$('#output').html(""); //reset our output element
+				for (var i = 0; i < data.length; i++) { //for each datum
+					$('#output').append( //append a new paragraph to #output
+						'<p>' + data[i].locStr + " has a " + data[i].pokemonId + '</p>'
+					);
+				}
+			},
+			'json' //interpret the incoming data as a JSON object (JSON.parse)
+		);
+	}
+
+	$(document).ready(function() {
+		showAllPokemon();
+		$('#submit').click(sendPokemon);
+		$('#submitSearch').click(showSearchedPokemon);
+	});
+
+
+	</script>
+</head>
+<body>
+	<style type="text/css">
+		body{
+			background-color: rgb(40,60,140);
+			color: rgb(250,200,0);
+			background-image: url("https://i.ytimg.com/vi/2sj2iQyBTQs/maxresdefault.jpg");
+			background-size: cover;
+		}
+		button{
+			background-color: rgb(40,60,140);
+			color: rgb(250,200,0);
+			border-radius: 5px;
+			border-color:rgb(250,200,0);
+		}
+		input{
+			color: rgb(40,60,140);
+			background-color: rgb(250,200,0);
+			border-radius: 5px;
+			border-color:rgb(40,60,140);
+		}
+		.logout{
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+		}
+		.inner{
+			width: 80%;
+			margin: 10 auto; 
+		}
+		#output{
+			text-align: center;
+			background-color: rgb(40,60,140);
+			width:30%;
+			margin:10px auto;
+			border-radius: 10px;
+			border:2px outset rgb(250,200,0);
+		}
+		#submit{
+			width: 50%;
+			margin:10 auto;
+		}
+		#submitSearch{
+			width: 50%;
+			margin:10 auto;
+		}
+	</style>
+	<h1>PokéTrack</h1>
+	<div class="container">
+	<div class="col-md-6 col-sm-6">
+		<div class="inner">Input a Pokemon You've Found
+			<div>City<br>
+				<input type="text" id="locStr">
+			</div>
+			<div>Pokemon<br>
+				<input type="text" id="pokemonId">
+			</div>
+			<button id="submit">Add Pokemon</button>
+		</div>
+	</div>
+	<div class="col-md-6 col-sm-6">
+		<div class="inner">Search for a Pokemon and/or a Location
+			<div>City <br>
+				<input type="text" id="locStrSearch">
+			</div>
+			<div>Pokemon <br>
+				<input type="text" id="pokemonIdSearch">
+			</div>
+			<button id="submitSearch">Search</button>
+		</div>
+	</div>
+	</div>
+	<a href="/logout">
+		<button class="logout">Logout</button>
+	</a>
+	<div>
+		<div class="container" id="output"></div>
+	</div>
+</body>
+</html>

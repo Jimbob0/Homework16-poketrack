@@ -1,0 +1,10 @@
+Log in to the app
+Post a location and a pokemon
+View all nearby pokemon locations
+Clear any pokemon after 10 minutes
+
+TODO - Future
+Add an actual map
+Store the pokemon data persistently
+Admin System
+Style the page
